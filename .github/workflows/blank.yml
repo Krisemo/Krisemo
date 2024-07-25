@@ -1,0 +1,109 @@
+import random
+
+def print_hangman(attempts):
+    stages = [
+        """
+           -----
+           |   |
+               |
+               |
+               |
+               |
+        =========
+        """,
+        """
+           -----
+           |   |
+           O   |
+               |
+               |
+               |
+        =========
+        """,
+        """
+           -----
+           |   |
+           O   |
+           |   |
+               |
+               |
+        =========
+        """,
+        """
+           -----
+           |   |
+           O   |
+          /|   |
+               |
+               |
+        =========
+        """,
+        """
+           -----
+           |   |
+           O   |
+          /|\\  |
+               |
+               |
+        =========
+        """,
+        """
+           -----
+           |   |
+           O   |
+          /|\\  |
+          /    |
+               |
+        =========
+        """,
+        """
+           -----
+           |   |
+           O   |
+          /|\\  |
+          / \\  |
+               |
+        =========
+        """
+    ]
+    print(stages[attempts])
+
+def hangman():
+    words = ["python", "hangman", "challenge", "programming", "computer"]
+    word = random.choice(words).lower()
+    guessed = "_" * len(word)
+    attempts = 6
+    guessed_letters = []
+    print("ברוך הבא למשחק איש תלוי!")
+
+    while attempts > 0:
+        print_hangman(6 - attempts)
+        print(f"ניסיונות נותרו: {attempts}")
+        print(f"ניחשת עד כה: {guessed}")
+        print(f"אותיות שניחשת: {', '.join(guessed_letters)}")
+        guess = input("נחש אות: ").lower()
+        
+        if len(guess) != 1 or not guess.isalpha():
+            print("בבקשה הכנס אות אחת.")
+            continue
+        
+        if guess in guessed_letters:
+            print("כבר ניחשת את האות הזו.")
+            continue
+        
+        guessed_letters.append(guess)
+        
+        if guess in word:
+            guessed = "".join([guess if word[i] == guess else guessed[i] for i in range(len(word))])
+            if guessed == word:
+                print(f"ניצחת! המילה היא: {word}")
+                break
+        else:
+            attempts -= 1
+            print("אות לא נכונה.")
+        
+        if attempts == 0:
+            print_hangman(6)
+            print(f"הפסדת! המילה הייתה: {word}")
+
+hangman()
